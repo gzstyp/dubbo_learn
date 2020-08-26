@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://code.alibabatech.com/schema/dubbo
+        http://code.alibabatech.com/schema/dubbo/dubbo.xsd ">
+
+    <!--<import resource="classpath:applicationProvider.xml" />-->
+
+    <dubbo:application name="provider_service"/>
+    <!-- zookeeper注册中心 -->
+    <dubbo:registry address="zookeeper://47.97.222.21:5120" client="zkclient"/>
+    <!--提供者才有的配置?-->
+    <dubbo:protocol name="dubbo" port="20880"/>
+    <!-- 和本地bean一样实现服务 -->
+    <bean id="providerService" class="com.fwtai.service.impl.ProviderServiceImpl"/>
+    <!-- (提供者)向注册中心注册暴漏服务地址,注册服务 -->
+    <dubbo:service interface="com.fwtai.service.ProviderService" ref="providerService" executes="10"/>
+</beans>
